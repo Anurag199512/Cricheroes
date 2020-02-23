@@ -1,8 +1,8 @@
 //below we are calculating decimal value of over from the figure value
 
 /*
-    converting 123.3 overs into 123 full overs and 3 balls into 1/2 overs
-    so we get final value as 123.5
+    converting 123.3 overs into 123 full overs and 3 balls into 1/2 overs that is equal to .5
+    so we get final figurative value as 123.5  
     
 */
 function getOverValue(over){

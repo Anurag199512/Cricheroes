@@ -1,5 +1,5 @@
 
-//below function is use to calculate no of balls from count of over
+//below function is used to calculate no of balls from count of over
 function getNoOfBalls(over){
 
     let tempBalls=String(over).split('.');

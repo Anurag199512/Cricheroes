@@ -10,7 +10,6 @@ function findRoot(A,B,C){
     let D=Math.sqrt(Math.pow(B,2)-(4*A*C));
     let root1=(D-B)/(2*A);
     let root2=(D+B)/(2*A);
-    
     if(root1 >0 && root2 >0)
         return root1<root2?root1:root2;
     else if(root1 >0 )
