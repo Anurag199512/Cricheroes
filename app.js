@@ -4,6 +4,29 @@ const fs = require('fs');
 let fileData = fs.readFileSync('data.json');
 let data = JSON.parse(fileData);
 
+
+/* FUNCTION SPECIFICATION
+
+calculateRestrictedRuns(homeTeamId,awayTeamId,runsScored,overTaken,moveToPosition)
+
+homeTeamId refers to the current rank of the team  which we want to move to specific position
+awayTeamId refers to the current rank of the team opponent team
+runsScored refers to the runs scored by team batting first
+overTaken refers to the over taken by team batting first
+moveToPosition refers to the position we want our team to be moved
+
+
+function calculateOvers will return the range of over under which homeTeam should chase the target
+
+calculateOvers(homeTeamId,awayTeamId,runsScored,overTaken,moveToPosition)
+homeTeamId refers to the current rank of the team  which we want to move to specific position
+awayTeamId refers to the current rank of the team opponent team
+runsScored refers to the runs scored by team batting first
+overTaken refers to the over taken by team batting first
+moveToPosition refers to the position we want our team to be moved
+*/
+
+
 //Scenario 1a from the challenge
 let answer1A=calculate.calculateRestrictedRuns(4,3,120,20,3);
 if(answer1A>=120)

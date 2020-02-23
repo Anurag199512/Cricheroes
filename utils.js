@@ -1,5 +1,3 @@
-//const data=require('./sampleData');
-
 const getOver=require('./getTotalOvers');
 const getBalls=require('./getNoOfBalls');
 const findRoot=require('./findroots');
@@ -8,8 +6,8 @@ const fs = require('fs');
 /*
 function calculateRestrictedRuns will return the range of run in which homeTeam should restrict awayTeam
 
-homeTeamId refers the team id for which  we want it to move to specific position
-awayTeamId refers the team id of the opponent team
+homeTeamId refers to the current team rank for which  we want it to move to specific position
+awayTeamId refers to the current team rank of the opponent team
 runsScored refers to the runs scored by team batting first
 overTaken refers to the over taken by team batting first
 moveToPosition refers to the position we want our team to be moved
@@ -69,11 +67,11 @@ function calculateRestrictedRuns(homeTeamId,awayTeamId,runsScored,overTaken,move
 /*
 function calculateOvers will return the range of over under which homeTeam should chase the target
 
-homeTeamId refers the team id for which  we want it to move to specific position
-awayTeamId refers the team id of the opponent team
+homeTeamId refers to the current team rank for which  we want it to move to specific position
+awayTeamId refers to the current team rank of the opponent team
 runsScored refers to the runs scored by team batting first
 overTaken refers to the over taken by team batting first
-moveToPosition refers to the position w want our team to be moved
+moveToPosition refers to the position we want our team to be moved
 */
 function calculateOvers(homeTeamId,awayTeamId,runsScored,overTaken,moveToPosition){
         

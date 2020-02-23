@@ -14,8 +14,8 @@ const rl = readline.createInterface({
 /*
 get input from user for the following variables
 
-homeTeamId refers the team id for which  we want it to move to specific position
-awayTeamId refers the team id of the opponent team
+homeTeamId refers to the current rank of the team  which we want to move to specific position
+awayTeamId refers to the current rank of the team opponent team
 runsScored refers to the runs scored by team batting first
 overTaken refers to the over taken by team batting first
 moveToPosition refers to the position we want our team to be moved
