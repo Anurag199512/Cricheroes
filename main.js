@@ -11,6 +11,15 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+
+//current team ranking
+console.log('Ranking\tTeam');
+console.log('--------------------------------');
+for(const key in data){
+   console.log(`${key}\t${data[key].Team}`) 
+};
+console.log('--------------------------------');
+
 /*
 get input from user for the following variables
 
