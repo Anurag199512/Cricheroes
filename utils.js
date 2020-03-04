@@ -1,8 +1,8 @@
 const getOver=require('./getTotalOvers');
 const getBalls=require('./getNoOfBalls');
-const findRoot=require('./findroots');
+const convertToOvers=require('./convertToOvers');
 const fs = require('fs');
-
+const findRoot=require('./findroots');
 /*
 function calculateRestrictedRuns will return the range of run in which homeTeam should restrict awayTeam
 
@@ -19,9 +19,26 @@ function calculateRestrictedRuns(homeTeamId,awayTeamId,runsScored,overTaken,move
     let data = JSON.parse(fileData);
 
     //when match is between the team who's position we want to take
-    if(awayTeamId===moveToPosition){
+    if(awayTeamId!==moveToPosition-1){
         let homeTeamData=data[homeTeamId];
-        let awayTeamData=data[awayTeamId];
+        let awayTeamData=data[awayTeamId-1];
+
+        homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored;
+        homeTeamData.forTeam.overs=homeTeamData.forTeam.overs+overTaken;
+        homeTeamData.againstTeam.overs=homeTeamData.againstTeam.overs+overTaken;
+
+        let step1=Number((homeTeamData.forTeam.runs/getOver(homeTeamData.forTeam.overs)).toFixed(3));
+
+        //console.log(step1,step2,step3,step4);
+
+        let tempRuns=((step1-awayTeamData.NRR)*getOver(homeTeamData.againstTeam.overs))-homeTeamData.againstTeam.runs;
+        
+        return Math.round(tempRuns)+1;
+    }
+    //when team whose position we are willing to take are not our opponent in current match
+    else{
+        let homeTeamData=data[homeTeamId];
+        let awayTeamData=data[moveToPosition-1];
 
         homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored;
         homeTeamData.forTeam.overs=homeTeamData.forTeam.overs+overTaken;
@@ -39,23 +56,7 @@ function calculateRestrictedRuns(homeTeamId,awayTeamId,runsScored,overTaken,move
         let tempRuns=step1+step2-step3-step4;
         let restrictedRuns=(tempRuns*getOver(homeTeamData.againstTeam.overs+20)*getOver(awayTeamData.forTeam.overs+20))/(getOver(homeTeamData.againstTeam.overs+20)+getOver(awayTeamData.forTeam.overs+20));
         
-        return restrictedRuns;
-    }
-    //when team whose position we are willing to take are not our opponent in current match
-    else{
-        let homeTeamData=data[homeTeamId];
-        let awayTeamData=data[moveToPosition];
-
-        homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored;
-        homeTeamData.forTeam.overs=homeTeamData.forTeam.overs+overTaken;
-
-        let step1=Number((homeTeamData.forTeam.runs/getOver(homeTeamData.forTeam.overs)).toFixed(3));
-        let step2=Number((homeTeamData.againstTeam.runs/getOver(homeTeamData.againstTeam.overs+20)).toFixed(3));
-
-        let tempRuns=step1-step2-awayTeamData.NRR;
-        let restrictedRuns=tempRuns*getOver(homeTeamData.againstTeam.overs+20);
-
-        return restrictedRuns;
+        return restrictedRuns+1;
    
         
     }
@@ -78,11 +79,41 @@ function calculateOvers(homeTeamId,awayTeamId,runsScored,overTaken,moveToPositio
     let fileData = fs.readFileSync('data.json');
     let data = JSON.parse(fileData);
     //when match is between the team who's position we want to take
-    if(awayTeamId===moveToPosition)
+    if(awayTeamId!==moveToPosition-1)
     {
         let homeTeamData=data[homeTeamId];
-        let awayTeamData=data[moveToPosition];
+        let awayTeamData=data[moveToPosition-1];
 
+        homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored+1;
+        homeTeamData.againstTeam.runs=homeTeamData.againstTeam.runs+runsScored;
+        homeTeamData.againstTeam.overs=homeTeamData.againstTeam.overs+overTaken;
+
+        let step1=Number((homeTeamData.againstTeam.runs/getOver(homeTeamData.againstTeam.overs)).toFixed(3));
+        let step2=Number((awayTeamData.forTeam.runs/getOver(awayTeamData.forTeam.overs)).toFixed(3));
+
+        // console.log(homeTeamData.forTeam.runs/(step1+awayTeamData.NRR),homeTeamData.forTeam.overs);
+        // console.log(getOver(getBalls(homeTeamData.forTeam.overs)),getBalls(homeTeamData.forTeam.overs))
+        let ans=(homeTeamData.forTeam.runs/(step1+awayTeamData.NRR))-getOver((homeTeamData.forTeam.overs))
+
+
+        return ans;
+    }
+    
+    //when team whose position we are willing to take are not our opponent in current match
+    else
+    {
+        let homeTeamData=data[homeTeamId];
+        let awayTeamData=data[awayTeamId];
+
+        // homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored+1;
+
+        // homeTeamData.againstTeam.runs=homeTeamData.againstTeam.runs+runsScored;
+        // homeTeamData.againstTeam.overs=homeTeamData.againstTeam.overs+overTaken;
+
+        // let step1=Number((homeTeamData.againstTeam.runs/getOver(homeTeamData.againstTeam.overs)).toFixed(3));
+        // let step2=getBalls(Number(homeTeamData.forTeam.runs/(awayTeamData.NRR+step1))) - getBalls(homeTeamData.forTeam.overs);
+        
+        // let restrictedOver=step2;
         homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored+1;
 
         homeTeamData.againstTeam.runs=homeTeamData.againstTeam.runs+runsScored;
@@ -108,27 +139,8 @@ function calculateOvers(homeTeamId,awayTeamId,runsScored,overTaken,moveToPositio
         */
         let ans=findRoot((step1+step2),step3,step4);
 
-        //returning no of balls
-        return ans*6;
-    }
-    
-    //when team whose position we are willing to take are not our opponent in current match
-    else
-    {
-        let homeTeamData=data[homeTeamId];
-        let awayTeamData=data[moveToPosition];
-
-        homeTeamData.forTeam.runs=homeTeamData.forTeam.runs+runsScored+1;
-
-        homeTeamData.againstTeam.runs=homeTeamData.againstTeam.runs+runsScored;
-        homeTeamData.againstTeam.overs=homeTeamData.againstTeam.overs+overTaken;
-
-        let step1=Number((homeTeamData.againstTeam.runs/getOver(homeTeamData.againstTeam.overs)).toFixed(3));
-        let step2=getBalls(Number(homeTeamData.forTeam.runs/(awayTeamData.NRR+step1))) - getBalls(homeTeamData.forTeam.overs);
         
-        let restrictedOver=step2;
-        
-        return restrictedOver;
+        return ans+.1;
     }    
 
 }

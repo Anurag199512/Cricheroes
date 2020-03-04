@@ -69,10 +69,7 @@ rl.question("Current ranking of favoured team? ", function(homeTeamId) {
                         }
                         else{
                             let answer=calculate.calculateOvers(homeTeamId,awayTeamId,Number(runsScored),20,moveToPosition);
-                            if(answer/6>=20)
-                                console.log(`${data[homeTeamId].Team} should be chase the target under 20 overs (between 0 to 20 overs)`);
-                            else
-                                console.log(`${data[homeTeamId].Team} should chase the target under ${getOver(parseFloat(answer)/6)} overs (between 0 to ${getOver(parseFloat(answer-1)/6)}) so that ${data[homeTeamId].Team} can move to position ${moveToPosition}.`)
+                            
 
                         }
                         rl.close();
